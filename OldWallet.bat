@@ -32,6 +32,20 @@ echo Click on a key to return to the menu
 pause>nul
 goto:menu
 ::********************************************************************************************
+:menu_[2] View a public key
+View a public key...
+cls & color 0B
 
+dir /b/o:n "./wallet/"
+
+set /p cryptoName=Enter the name of the cryptocurrency:
+set publicKey=.\wallet\%cryptoName%\%cryptoName%_public.key
+echo Public key of %cryptoName%:
+type %publicKey%
+
+echo Click on a key to return to the menu
+pause>nul
+goto:menu
+::********************************************************************************************
 :EOF
 EXIT
