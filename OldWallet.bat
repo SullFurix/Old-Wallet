@@ -62,7 +62,27 @@ echo Click on a key to return to the menu
 pause>nul
 goto:menu
 ::********************************************************************************************
+:menu_[4] View all public keys
+View all public keys...
+cls & color 0B
 
+for /f "tokens=*" %%c in ('dir /b/o:n "./wallet/"') do echo %%c:&& type ".\wallet\%%c\%%c_public.key"
 
+echo.
+echo Click on a key to return to the menu
+pause>nul
+goto:menu
+::********************************************************************************************
+:menu_[5] View all private keys
+View all private keys...
+cls & color 0B
+
+for /f "tokens=*" %%c in ('dir /b/o:n "./wallet/"') do echo %%c:&& type ".\wallet\%%c\%%c_private.key"
+
+echo.
+echo Click on a key to return to the menu
+pause>nul
+goto:menu
+::********************************************************************************************
 :EOF
 EXIT
