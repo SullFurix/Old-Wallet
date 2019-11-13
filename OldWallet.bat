@@ -1,5 +1,5 @@
 @echo off & cls & color 0B
-Mode con cols=72 lines=5
+Mode con cols=72 lines=12
 
 :menu
 Cls & color 0B
