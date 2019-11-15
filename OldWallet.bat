@@ -1,3 +1,8 @@
+:: _______________________________________________________________ ::
+::|           ____ _  _ _    _    ____ _  _ ____ _ _  _           |::
+::|           [__  |  | |    |    |___ |  | |__/ |  \/            |::
+::|           ___] |__| |___ |___ |    |__| |  \ | _/\_           |::
+::|_______________________________________________________________|::
 @echo off & cls & color 0B
 mode con cols=70 lines=13
 
@@ -46,12 +51,10 @@ mkdir ".\wallet\%cryptoName%"
 set /p addressName=Enter the name of the address you wish to add(ex:Address1):
 
 set /p cryptoPublic=Enter your public key:
-echo.%addressName%(public):>>.\wallet\%cryptoName%\%cryptoName%_public.key
-echo.%cryptoPublic%>>.\wallet\%cryptoName%\%cryptoName%_public.key
+echo.%addressName%:%cryptoPublic%>>.\wallet\%cryptoName%\%cryptoName%_public.key
 
 set /p cryptoPrivate=Enter your private key:
-echo.%addressName%(private):>>.\wallet\%cryptoName%\%cryptoName%_private.key
-echo.%cryptoPrivate%>>.\wallet\%cryptoName%\%cryptoName%_private.key
+echo.%addressName%:%cryptoPrivate%>>.\wallet\%cryptoName%\%cryptoName%_private.key
 
 echo Click on a key to return to the menu
 pause>nul
@@ -68,12 +71,10 @@ set /p cryptoName=Choose the name of the cryptocurrency to which you want to add
 set /p addressName=Enter the name of the address you wish to add(ex:Address1):
 
 set /p cryptoPublic=Enter your public key:
-echo.%addressName%(public):>>.\wallet\%cryptoName%\%cryptoName%_public.key
-echo.%cryptoPublic%>>.\wallet\%cryptoName%\%cryptoName%_public.key
+echo.%addressName%:%cryptoPublic%>>.\wallet\%cryptoName%\%cryptoName%_public.key
 
 set /p cryptoPrivate=Enter your private key:
-echo.%addressName%(private):>>.\wallet\%cryptoName%\%cryptoName%_private.key
-echo.%cryptoPrivate%>>.\wallet\%cryptoName%\%cryptoName%_private.key
+echo.%addressName%:%cryptoPrivate%>>.\wallet\%cryptoName%\%cryptoName%_private.key
 
 echo Click on a key to return to the menu
 pause>nul
@@ -111,7 +112,7 @@ dir /b/o:n ".\wallet\"
 
 set /p cryptoName=Enter the name of the cryptocurrency:
 set publicKey=.\wallet\%cryptoName%\%cryptoName%_public.key
-echo Public key of %cryptoName%:
+echo ----%cryptoName%----
 type %publicKey%
 
 echo Click on a key to return to the menu
@@ -127,7 +128,7 @@ dir /b/o:n ".\wallet\"
 
 set /p cryptoName=Enter the name of the cryptocurrency:
 set privateKey=.\wallet\%cryptoName%\%cryptoName%_private.key
-echo Private key of %cryptoName%:
+echo ----%cryptoName%----
 type %privateKey%
 
 echo Click on a key to return to the menu
@@ -161,12 +162,72 @@ goto:menu
 :subShowMenu_[5]
 goto:menu
 ::********************************************************************************************
-:menu_[3] Delete an address
-Title Delete all private keys...
+:menu_[3] Delete address
+mode con cols=84 lines=13
+Title Delete address...
 cls & color 0B
 
-type ".\wallet\%cryptoName%\%cryptoName%_private.key" | findstr /b /v "%addressName%">%cryptoName%_private.key
+echo.
+echo.      ================================Menu==================================
+echo.
+echo.           [1]  Delete an address
+echo.           [2]  Delete a cryptocurrency
+echo.           [3]  Go back
+echo.
+echo.      ======================================================================
+set choice=
+echo. & set /p choice=The number of your choice and press ENTER: || goto :menu_[3]
+echo. & call :subDelMenu_[%choice%]
+goto:menu_[3]
+::=============================================
+:subDelMenu_[1] Delete an address
+mode con cols=72 lines=999999
+Title Delete an address...
+cls & color 0B
 
+dir /b/o:n ".\wallet\"
+set /p cryptoName=Enter the name of the cryptocurrency to delete an address:
+
+set publicKey=.\wallet\%cryptoName%\%cryptoName%_public.key
+echo -----%cryptoName%-----
+type %publicKey%
+set /p addressName=Enter the name of the address:
+
+type ".\wallet\%cryptoName%\%cryptoName%_public.key" | findstr /b /v "%addressName%:">%cryptoName%_public.key
+move "%cryptoName%_public.key" ".\wallet\%cryptoName%\%cryptoName%_public.key"
+
+type ".\wallet\%cryptoName%\%cryptoName%_private.key" | findstr /b /v "%addressName%:">%cryptoName%_private.key
+move "%cryptoName%_private.key" ".\wallet\%cryptoName%\%cryptoName%_private.key"
+
+echo Click on a key to return to the menu
+pause>nul
+goto:menu
+::=============================================
+:subDelMenu_[2] Delete a cryptocurrency
+mode con cols=72 lines=999999
+Title Delete a cryptocurrency...
+cls & color 0B
+
+dir /b/o:n ".\wallet\"
+set /p cryptoName=Enter the name of the cryptocurrency you wish to delete:
+rmdir /s /q .\wallet\%cryptoName%
+
+echo Click on a key to return to the menu
+pause>nul
+goto:menu
+::=============================================
+:subDelMenu_[3]
+goto:menu
+::********************************************************************************************
+:menu_[4] Credits
+@echo off
+mode con cols=72 lines=13
+Title Credits...
+cls & color 0B
+echo.
+echo.
+echo.	Old Wallet	By SullFurix
+echo.
 echo.
 echo Click on a key to return to the menu
 pause>nul
@@ -174,15 +235,3 @@ goto:menu
 ::********************************************************************************************
 :EOF
 EXIT
-
-
-
-
-
-
-
-
-
-
-
-
